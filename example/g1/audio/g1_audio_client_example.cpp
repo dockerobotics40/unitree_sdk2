@@ -5,7 +5,8 @@
 #include <unitree/robot/channel/channel_subscriber.hpp>
 #include <unitree/robot/g1/audio/g1_audio_client.hpp>
 
-#define AUDIO_FILE_PATH "../example/g1/audio/test.wav"
+#define AUDIO_FILE_PATH "../softwareengineer/unitree_sdk2/example/g1/audio/test.wav"
+
 #define AUDIO_SUBSCRIBE_TOPIC "rt/audio_msg"
 
 // wave reader start
@@ -221,8 +222,15 @@ int main(int argc, char const *argv[]) {
 
   /*TTS Example*/
   int32_t ret;
-  ret = client.TtsMaker("你好。我是宇树科技的机器人G1。例程启动成功",
+  //你好。我是宇树科技的机器人G1。例程启动成功
+  // nuestro 好啦, 马里奥!,  费利兹,  库姆, 普雷, 阿尼奥斯, 特, 德, 西亚,
+  ret = client.TtsMaker("好啦, 马里奥!,  费利兹,  库姆, 普雷, 阿尼奥斯, 特, 德, 西亚",
                         0);  // Auto play
+  std::cout << "TtsMaker ret:" << ret << std::endl;
+  unitree::common::Sleep(5);
+
+  ret = client.TtsMaker(" 若, 波, 提克斯, 夸, 特罗, 噗姆, 托, 泽, 若",
+    0);  // Auto play
   std::cout << "TtsMaker ret:" << ret << std::endl;
   unitree::common::Sleep(5);
 
@@ -231,13 +239,13 @@ int main(int argc, char const *argv[]) {
   ret = client.GetVolume(volume);
   std::cout << "GetVolume ret:" << ret
             << "  volume = " << std::to_string(volume) << std::endl;
-  ret = client.SetVolume(60);
-  std::cout << "SetVolume to 60% , ret:" << ret << std::endl;
+  ret = client.SetVolume(85);
+  std::cout << "SetVolume to 85% , ret:" << ret << std::endl;
 
   /*Audio Play Example*/
-  int32_t sample_rate = -1;
-  int8_t num_channels = 0;
-  bool filestate = false;
+  int32_t sample_rate = 16000;
+  int8_t num_channels = 1;
+  bool filestate = true;
   std::vector<uint8_t> pcm =
       ReadWave(AUDIO_FILE_PATH, &sample_rate, &num_channels, &filestate);
 
@@ -245,7 +253,7 @@ int main(int argc, char const *argv[]) {
             << " num_channels =  " << std::to_string(num_channels)
             << " filestate =" << filestate << std::endl;
 
-  if (filestate && sample_rate == 16000 && num_channels == 1) {
+  if (true && sample_rate == 16000 && num_channels == 1) {
     client.PlayStream(
         "example", std::to_string(unitree::common::GetCurrentTimeMillisecond()),
         pcm);
